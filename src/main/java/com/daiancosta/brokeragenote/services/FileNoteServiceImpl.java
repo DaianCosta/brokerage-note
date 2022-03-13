@@ -2,17 +2,13 @@ package com.daiancosta.brokeragenote.services;
 
 import com.daiancosta.brokeragenote.helpers.FormatHelper;
 import com.daiancosta.brokeragenote.helpers.PdfHelper;
-import com.daiancosta.brokeragenote.models.BusinessItem;
+import com.daiancosta.brokeragenote.models.NoteItem;
 import com.daiancosta.brokeragenote.models.Note;
 import com.daiancosta.brokeragenote.models.constants.NoteConstant;
 import com.daiancosta.brokeragenote.models.enums.InstitutionEnum;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.text.PDFTextStripper;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,7 +27,7 @@ public class FileNoteServiceImpl implements FileNoteService {
 
         final List<Note> notesList = new ArrayList<>();
         Note note = new Note();
-        List<BusinessItem> businessItems = new ArrayList<>();
+        List<NoteItem> businessItems = new ArrayList<>();
 
         for (int i = 0; i < documentLines.length; i++) {
             setNumber(documentLines, i, note);
@@ -137,9 +133,9 @@ public class FileNoteServiceImpl implements FileNoteService {
     }
 
     //ITEMS
-    private void setItems(final String[] documentLines, final Integer i, List<BusinessItem> items) {
+    private void setItems(final String[] documentLines, final Integer i, List<NoteItem> items) {
         if (documentLines[i].contains(NoteConstant.BOVESPA)) {
-            final BusinessItem item = new BusinessItem();
+            final NoteItem item = new NoteItem();
             final String[] itemArray = documentLines[i].split(" ");
 
             if (itemArray[2].contains(NoteConstant.SELL_OPTION)) {

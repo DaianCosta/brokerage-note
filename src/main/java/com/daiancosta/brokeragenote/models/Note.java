@@ -24,5 +24,5 @@ public class Note {
     private BigDecimal totalInCashSales;//total venda a vista
     private BigDecimal totalOptionsPurchase;//opcao de compra
     private BigDecimal totalOptionsSale;//opcao de venda
-    private List<BusinessItem> items;
+    private List<NoteItem> items;
 }
