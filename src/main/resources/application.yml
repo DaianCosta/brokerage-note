@@ -5,7 +5,7 @@ server:
 
 spring:
   application:
-    name: auth
+    name: brokerage
   servlet:
     multipart.max-file-size: 2MB
     multipart.max-request-size: 2MB

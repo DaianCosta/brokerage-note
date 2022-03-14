@@ -33,8 +33,8 @@ class FileNoteServiceImpl implements FileNoteService {
 
         String[] documentLines = pdfToText.split("\r\n|\r|\n");
 
-        Note note = new Note();
-        List<NoteItem> businessItems = new ArrayList<>();
+        final Note note = new Note();
+        final List<NoteItem> businessItems = new ArrayList<>();
 
         for (int i = 0; i < documentLines.length; i++) {
             setNumber(documentLines, i, note);
@@ -143,8 +143,8 @@ class FileNoteServiceImpl implements FileNoteService {
                     .filter(it -> !it.equals(""))
                     .toArray(String[]::new);
 
-            final String nameTitle = itemArray[4].concat(" ").concat(itemArray[5]).concat(" ").concat(itemArray[6]);
-            final String nameTitleOptional = itemArray[4].concat(" ").concat(itemArray[5]);
+            final String nameTitle = itemArray[3].concat(" ").concat(itemArray[4]).concat(" ").concat(itemArray[5]);
+            final String nameTitleOptional = itemArray[3].concat(" ").concat(itemArray[4]);
 
             if (itemArray[2].contains(NoteConstant.SELL_OPTION)) {
                 item.setTypeMarket(NoteConstant.SELL_OPTION);

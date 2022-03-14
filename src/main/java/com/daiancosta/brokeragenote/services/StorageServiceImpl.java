@@ -1,12 +1,12 @@
 package com.daiancosta.brokeragenote.services;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import org.springframework.core.io.Resource;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
@@ -23,11 +23,14 @@ class StorageServiceImpl implements StorageService {
     @Override
     public void init() {
         try {
-            Files.createDirectory(Paths.get(path));
+            if (!Files.isDirectory(Paths.get(path))) {
+                Files.createDirectory(Paths.get(path));
+            }
         } catch (IOException e) {
             throw new RuntimeException("Could not initialize folder for upload!");
         }
     }
+
     @Override
     public Resource load(String filename) {
         try {
@@ -42,6 +45,7 @@ class StorageServiceImpl implements StorageService {
             throw new RuntimeException("Error: " + e.getMessage());
         }
     }
+
     @Override
     public void save(MultipartFile file) {
         try {
@@ -50,6 +54,7 @@ class StorageServiceImpl implements StorageService {
             throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
         }
     }
+
     @Override
     public void deleteAll() {
         FileSystemUtils.deleteRecursively(Paths.get(path).toFile());
