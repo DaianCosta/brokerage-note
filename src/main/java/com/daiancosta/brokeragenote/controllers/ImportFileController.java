@@ -1,8 +1,12 @@
 package com.daiancosta.brokeragenote.controllers;
 
+import com.daiancosta.brokeragenote.domain.entities.FileInfo;
+import com.daiancosta.brokeragenote.domain.entities.Note;
 import com.daiancosta.brokeragenote.domain.entities.enums.TypeFileEnum;
 import com.daiancosta.brokeragenote.domain.entities.messages.ResponseMessage;
-import org.apache.tomcat.jni.FileInfo;
+import com.daiancosta.brokeragenote.services.FileNoteService;
+import com.daiancosta.brokeragenote.services.NoteService;
+import com.daiancosta.brokeragenote.services.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
@@ -20,6 +24,9 @@ public class ImportFileController {
     @Autowired
     FileNoteService fileNoteService;
 
+    @Autowired
+    NoteService noteService;
+
     @PostMapping("/upload")
     public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file,
                                                       @RequestParam("type") TypeFileEnum typeFileEnum,
@@ -29,7 +36,9 @@ public class ImportFileController {
             storageService.save(file);
             final Resource fileResource = storageService.load(file.getOriginalFilename());
 
-            fileNoteService.save("uploads/" + file.getOriginalFilename(), password);
+            final Note note = fileNoteService.save("uploads/" + file.getOriginalFilename(), password);
+            final Note noteSaved = noteService.save(note);
+
             final FileInfo fileInfo = new FileInfo(file.getOriginalFilename(),
                     typeFileEnum,
                     fileResource.getURL().getFile(),

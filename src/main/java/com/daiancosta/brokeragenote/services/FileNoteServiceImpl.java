@@ -6,6 +6,7 @@ import com.daiancosta.brokeragenote.domain.entities.NoteItem;
 import com.daiancosta.brokeragenote.domain.entities.Note;
 import com.daiancosta.brokeragenote.domain.entities.constants.NoteConstant;
 import com.daiancosta.brokeragenote.domain.entities.enums.InstitutionEnum;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -18,14 +19,20 @@ import java.util.List;
 @Service
 class FileNoteServiceImpl implements FileNoteService {
 
-    public void save(final String filePath, final String password) throws IOException, ParseException {
+    private final TitleService titleService;
+
+    @Autowired
+    FileNoteServiceImpl(TitleService titleService) {
+        this.titleService = titleService;
+    }
+
+    public Note save(final String filePath, final String password) throws IOException, ParseException {
 
         final String pdfToText = PdfHelper.getText(filePath, password);
         System.out.println(pdfToText);
 
         String[] documentLines = pdfToText.split("\r\n|\r|\n");
 
-        final List<Note> notesList = new ArrayList<>();
         Note note = new Note();
         List<NoteItem> businessItems = new ArrayList<>();
 
@@ -45,11 +52,9 @@ class FileNoteServiceImpl implements FileNoteService {
             //FINISH SHEET NOTE
             if (documentLines[i].contains(NoteConstant.FINISH_SHEET_NOTE)) {
                 note.setItems(businessItems);
-                notesList.add(note);
-                note = new Note();
-                businessItems = new ArrayList<>();
             }
         }
+        return note;
     }
 
     private void setNumber(final String[] documentLines, final Integer i, Note note) {
@@ -138,12 +143,18 @@ class FileNoteServiceImpl implements FileNoteService {
                     .filter(it -> !it.equals(""))
                     .toArray(String[]::new);
 
+            final String nameTitle = itemArray[4].concat(" ").concat(itemArray[5]).concat(" ").concat(itemArray[6]);
+            final String nameTitleOptional = itemArray[4].concat(" ").concat(itemArray[5]);
+
             if (itemArray[2].contains(NoteConstant.SELL_OPTION)) {
                 item.setTypeMarket(NoteConstant.SELL_OPTION);
+                item.setTitleCode(itemArray[4]);
             } else if (itemArray[2].contains(NoteConstant.IN_CASH)) {
                 item.setTypeMarket(NoteConstant.IN_CASH);
+                item.setTitleCode(titleService.getByCode(nameTitle, nameTitleOptional));
             } else {
                 item.setTypeMarket(NoteConstant.FRACTIONAL);
+                item.setTitleCode(titleService.getByCode(nameTitle, nameTitleOptional));
             }
 
             final int latestPosition = itemArray.length;

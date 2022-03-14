@@ -1,8 +1,9 @@
 CREATE TABLE title (
-	id int AUTO_INCREMENT PRIMARY KEY NOT NULL,
+	id INT NOT NULL AUTO_INCREMENT,
 	name varchar(255) NOT NULL,
-	code varchar(20) NOT NULL,
-) ENGINE=INNODB;
+	code VARCHAR(20) NOT NULL,
+	PRIMARY KEY ( id )
+);
 
 insert into title (name, code) values ('3R PETROLEUM ON','RRRP3');
 insert into title (name, code) values ('3TENTOS ON','TTEN3');
