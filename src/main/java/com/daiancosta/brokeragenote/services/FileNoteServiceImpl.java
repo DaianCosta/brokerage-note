@@ -6,12 +6,15 @@ import com.daiancosta.brokeragenote.models.NoteItem;
 import com.daiancosta.brokeragenote.models.Note;
 import com.daiancosta.brokeragenote.models.constants.NoteConstant;
 import com.daiancosta.brokeragenote.models.enums.InstitutionEnum;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -60,9 +63,7 @@ public class FileNoteServiceImpl implements FileNoteService {
 
     private void setDate(final String[] documentLines, final Integer i, Note note) throws ParseException {
         if (documentLines[i].contains(NoteConstant.DATE)) {
-            final SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-            final Date parsedDate = formatter.parse(documentLines[i + 1]);
-            note.setDate(parsedDate);
+            note.setDate(LocalDate.parse(documentLines[i + 1]));
         }
     }
 
@@ -136,24 +137,27 @@ public class FileNoteServiceImpl implements FileNoteService {
     private void setItems(final String[] documentLines, final Integer i, List<NoteItem> items) {
         if (documentLines[i].contains(NoteConstant.BOVESPA)) {
             final NoteItem item = new NoteItem();
-            final String[] itemArray = documentLines[i].split(" ");
+            final String[] itemArray = Arrays.stream(documentLines[i].split(" "))
+                    .filter(it -> !it.equals(""))
+                    .toArray(String[]::new);
 
             if (itemArray[2].contains(NoteConstant.SELL_OPTION)) {
                 item.setTypeMarket(NoteConstant.SELL_OPTION);
-            } else {
+            } else if (itemArray[2].contains(NoteConstant.IN_CASH)) {
                 item.setTypeMarket(NoteConstant.IN_CASH);
+            } else {
+                item.setTypeMarket(NoteConstant.FRACTIONAL);
             }
 
+            final int latestPosition = itemArray.length;
             item.setTypeOperation(itemArray[1]);
-            item.setTypeTransaction(itemArray[itemArray.length - 1]);
+            item.setTypeTransaction(itemArray[latestPosition - 1]);
 
-            item.setPrice(FormatHelper.stringToBigDecimal(itemArray[itemArray.length - 2]));
-            item.setPriceUnit(FormatHelper.stringToBigDecimal(itemArray[itemArray.length - 3]));
-            item.setQuantity(FormatHelper.stringToBigDecimal(itemArray[itemArray.length - 4]));
+            item.setPrice(FormatHelper.stringToBigDecimal(itemArray[latestPosition - 2]));
+            item.setPriceUnit(FormatHelper.stringToBigDecimal(itemArray[latestPosition - 3]));
+            item.setQuantity(FormatHelper.stringToBigDecimal(itemArray[latestPosition - 4]));
 
             items.add(item);
         }
     }
-
-
 }

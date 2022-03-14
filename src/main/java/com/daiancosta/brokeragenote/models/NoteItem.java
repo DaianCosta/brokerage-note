@@ -1,5 +1,6 @@
 package com.daiancosta.brokeragenote.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,5 +31,6 @@ public class NoteItem {
 
     @ManyToOne
     @JoinColumn(name = "note_id")
+    @JsonIgnore
     private Note note;
 }

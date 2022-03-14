@@ -13,5 +13,6 @@ public class NoteConstant {
     public static final String BOVESPA = "1-BOVESPA";
     public static final String IN_CASH = "VISTA";
     public static final String SELL_OPTION = "OPCAO DE VENDA";
+    public static final String FRACTIONAL = "FRACIONARIO";
     public static final String BUSINESS_SUMMARY = "Resumo dos Negócios";
 }
