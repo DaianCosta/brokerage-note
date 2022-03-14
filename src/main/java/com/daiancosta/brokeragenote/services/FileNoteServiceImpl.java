@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.text.ParseException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -65,7 +66,9 @@ class FileNoteServiceImpl implements FileNoteService {
 
     private void setDate(final String[] documentLines, final Integer i, Note note) throws ParseException {
         if (documentLines[i].contains(NoteConstant.DATE)) {
-            note.setDate(LocalDate.parse(documentLines[i + 1]));
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            final LocalDate parseDate = LocalDate.parse(documentLines[i + 1], formatter);
+            note.setDate(parseDate);
         }
     }
 
