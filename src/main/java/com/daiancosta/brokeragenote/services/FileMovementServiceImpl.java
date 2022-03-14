@@ -1,7 +1,7 @@
 package com.daiancosta.brokeragenote.services;
 
 import com.daiancosta.brokeragenote.helpers.ExcelHelper;
-import com.daiancosta.brokeragenote.models.Business;
+import com.daiancosta.brokeragenote.domain.entities.Business;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 

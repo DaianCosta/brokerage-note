@@ -1,6 +1,6 @@
 package com.daiancosta.brokeragenote.helpers;
 
-import com.daiancosta.brokeragenote.models.Business;
+import com.daiancosta.brokeragenote.domain.entities.Business;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;

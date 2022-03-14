@@ -2,24 +2,21 @@ package com.daiancosta.brokeragenote.services;
 
 import com.daiancosta.brokeragenote.helpers.FormatHelper;
 import com.daiancosta.brokeragenote.helpers.PdfHelper;
-import com.daiancosta.brokeragenote.models.NoteItem;
-import com.daiancosta.brokeragenote.models.Note;
-import com.daiancosta.brokeragenote.models.constants.NoteConstant;
-import com.daiancosta.brokeragenote.models.enums.InstitutionEnum;
-import org.springframework.format.annotation.DateTimeFormat;
+import com.daiancosta.brokeragenote.domain.entities.NoteItem;
+import com.daiancosta.brokeragenote.domain.entities.Note;
+import com.daiancosta.brokeragenote.domain.entities.constants.NoteConstant;
+import com.daiancosta.brokeragenote.domain.entities.enums.InstitutionEnum;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 @Service
-public class FileNoteServiceImpl implements FileNoteService {
+class FileNoteServiceImpl implements FileNoteService {
 
     public void save(final String filePath, final String password) throws IOException, ParseException {
 

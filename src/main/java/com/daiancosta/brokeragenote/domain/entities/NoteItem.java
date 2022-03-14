@@ -1,4 +1,4 @@
-package com.daiancosta.brokeragenote.models;
+package com.daiancosta.brokeragenote.domain.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
@@ -26,6 +26,8 @@ public class NoteItem {
     private BigDecimal quantity;
     private BigDecimal priceUnit;
     private BigDecimal price;
+    @Column(name = "fee_unit")
+    private BigDecimal feeUnit;
     @Column(name = "type_transaction")
     private String typeTransaction;
 

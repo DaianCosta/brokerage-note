@@ -1,10 +1,8 @@
 package com.daiancosta.brokeragenote.controllers;
 
-import com.daiancosta.brokeragenote.messages.ResponseMessage;
-import com.daiancosta.brokeragenote.models.FileInfo;
-import com.daiancosta.brokeragenote.models.enums.TypeFileEnum;
-import com.daiancosta.brokeragenote.services.FileNoteService;
-import com.daiancosta.brokeragenote.services.StorageService;
+import com.daiancosta.brokeragenote.domain.entities.enums.TypeFileEnum;
+import com.daiancosta.brokeragenote.domain.entities.messages.ResponseMessage;
+import org.apache.tomcat.jni.FileInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;

@@ -1,4 +1,4 @@
-package com.daiancosta.brokeragenote.messages;
+package com.daiancosta.brokeragenote.domain.entities.messages;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -15,7 +15,7 @@ import java.nio.file.Paths;
 import java.util.Objects;
 
 @Service
-public class StorageServiceImpl implements StorageService {
+class StorageServiceImpl implements StorageService {
 
     @Value("${upload.path}")
     private String path;

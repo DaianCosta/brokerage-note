@@ -1,6 +1,6 @@
-package com.daiancosta.brokeragenote.exceptions;
+package com.daiancosta.brokeragenote.controllers.exceptions;
 
-import com.daiancosta.brokeragenote.messages.ResponseMessage;
+import com.daiancosta.brokeragenote.domain.entities.messages.ResponseMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

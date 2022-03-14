@@ -1,6 +1,6 @@
-package com.daiancosta.brokeragenote.models;
+package com.daiancosta.brokeragenote.domain.entities;
 
-import com.daiancosta.brokeragenote.models.enums.TypeFileEnum;
+import com.daiancosta.brokeragenote.domain.entities.enums.TypeFileEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

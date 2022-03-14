@@ -1,4 +1,4 @@
-package com.daiancosta.brokeragenote.models.constants;
+package com.daiancosta.brokeragenote.domain.entities.constants;
 
 public class NoteConstant {
     public static final String SETTLEMENT_FEE = "Taxa de liquidação";

@@ -1,4 +1,4 @@
-package com.daiancosta.brokeragenote.models;
+package com.daiancosta.brokeragenote.domain.entities;
 
 import lombok.Data;
 import lombok.Getter;

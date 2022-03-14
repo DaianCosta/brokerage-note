@@ -1,4 +1,4 @@
-package com.daiancosta.brokeragenote.models.enums;
+package com.daiancosta.brokeragenote.domain.entities.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

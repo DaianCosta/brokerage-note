@@ -1,4 +1,4 @@
-package com.daiancosta.brokeragenote.models.exceptions;
+package com.daiancosta.brokeragenote.domain.entities.exceptions;
 
 public class FileStorageException extends RuntimeException{
     public FileStorageException(final String message){
