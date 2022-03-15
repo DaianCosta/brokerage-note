@@ -38,7 +38,6 @@ public class ImportFileController {
 
             final Note note = fileNoteService.save("uploads/" + file.getOriginalFilename(), password);
             final Note noteSaved = noteService.save(note);
-
             final FileInfo fileInfo = new FileInfo(file.getOriginalFilename(),
                     typeFileEnum,
                     fileResource.getURL().getFile(),

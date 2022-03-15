@@ -4,6 +4,8 @@ import com.daiancosta.brokeragenote.domain.entities.Note;
 import com.daiancosta.brokeragenote.domain.repositories.NoteRepository;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
 class NoteServiceImpl implements NoteService {
     private final NoteRepository noteRepository;
@@ -12,6 +14,7 @@ class NoteServiceImpl implements NoteService {
         this.noteRepository = noteRepository;
     }
 
+    @Transactional
     public Note save(final Note note) {
         deleteByNumber(note.getNumber());
         return noteRepository.save(note);

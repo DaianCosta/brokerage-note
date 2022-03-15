@@ -44,6 +44,7 @@ public class Note {
     @Column(name = "total_options_sale")
     private BigDecimal totalOptionsSale;//opcao de venda
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "note")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "note_id")
     private List<NoteItem> items;
 }

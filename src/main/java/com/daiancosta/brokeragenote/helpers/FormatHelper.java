@@ -8,9 +8,10 @@ public class FormatHelper {
         try {
 
             String newValue = value;
-            if (value.length() <= 8) {
-                newValue = value.replace(",", ".");
+            if (value.length() >= 8) {
+                newValue = newValue.replace(".", "");
             }
+            newValue = newValue.replace(",", ".");
 
             return new BigDecimal(newValue);
         } catch (Exception e) {

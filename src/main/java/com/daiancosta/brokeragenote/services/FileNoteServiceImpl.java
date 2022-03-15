@@ -142,6 +142,7 @@ class FileNoteServiceImpl implements FileNoteService {
     private void setItems(final String[] documentLines, final Integer i, List<NoteItem> items) {
         if (documentLines[i].contains(NoteConstant.BOVESPA)) {
             final NoteItem item = new NoteItem();
+
             final String[] itemArray = Arrays.stream(documentLines[i].split(" "))
                     .filter(it -> !it.equals(""))
                     .toArray(String[]::new);
