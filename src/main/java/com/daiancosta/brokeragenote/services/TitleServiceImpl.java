@@ -29,17 +29,8 @@ class TitleServiceImpl implements TitleService {
     }
 
     @Override
-    public String getByCode(final String name, final String nameOptional) {
-        final String resultCode = titleRepository.findByName(name);
-        if (resultCode != null) {
-            return resultCode;
-        } else {
-            final String resultCodeOptional = titleRepository.findByName(name);
-            if (resultCodeOptional != null) {
-                return resultCodeOptional;
-            } else {
-                return nameOptional;
-            }
-        }
+    public String getByCode(final String name) {
+       return titleRepository.findByName(name);
     }
 }
+

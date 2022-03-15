@@ -3,6 +3,7 @@ package com.daiancosta.brokeragenote.controllers;
 import com.daiancosta.brokeragenote.domain.entities.FileInfo;
 import com.daiancosta.brokeragenote.domain.entities.Note;
 import com.daiancosta.brokeragenote.domain.entities.enums.TypeFileEnum;
+import com.daiancosta.brokeragenote.domain.entities.exceptions.FileNoteBusinessException;
 import com.daiancosta.brokeragenote.domain.entities.messages.ResponseMessage;
 import com.daiancosta.brokeragenote.services.FileNoteService;
 import com.daiancosta.brokeragenote.services.NoteService;
@@ -45,6 +46,9 @@ public class ImportFileController {
 
             message = "Uploaded the file successfully: " + file.getOriginalFilename();
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message, fileInfo));
+        } catch (FileNoteBusinessException e) {
+            message = e.getMessage();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(message, null));
         } catch (Exception e) {
             message = "Could not upload the file: " + file.getOriginalFilename() + "!";
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message, null));

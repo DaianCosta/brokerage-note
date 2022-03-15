@@ -12,6 +12,7 @@ insert into title (name, code) values ('ADOBE INC DRN','ADBE34');
 insert into title (name, code) values ('ADVANCED MIC DRN','A1MD34');
 insert into title (name, code) values ('AERIS ON','AERI3');
 insert into title (name, code) values ('AES BRASIL ON','AESB3');
+insert into title (name, code) values ('AES TIETE E UNT','TIET11');
 insert into title (name, code) values ('AGROGALAXY ON','AGXY3');
 insert into title (name, code) values ('AIRBNB DRN','AIRB34');
 insert into title (name, code) values ('ALIANSCSONAE ON','ALSO3');

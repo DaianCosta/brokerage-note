@@ -1,5 +1,7 @@
 package com.daiancosta.brokeragenote.services;
 
+import com.daiancosta.brokeragenote.domain.entities.constants.NoteBusinessConstant;
+import com.daiancosta.brokeragenote.domain.entities.exceptions.FileNoteBusinessException;
 import com.daiancosta.brokeragenote.helpers.FormatHelper;
 import com.daiancosta.brokeragenote.helpers.PdfHelper;
 import com.daiancosta.brokeragenote.domain.entities.NoteItem;
@@ -10,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -38,6 +42,7 @@ class FileNoteServiceImpl implements FileNoteService {
         final List<NoteItem> businessItems = new ArrayList<>();
 
         for (int i = 0; i < documentLines.length; i++) {
+            statusNote(documentLines, i, note);
             setNumber(documentLines, i, note);
             setDate(documentLines, i, note);
             setInstitution(documentLines, i, note);
@@ -52,10 +57,17 @@ class FileNoteServiceImpl implements FileNoteService {
 
             //FINISH SHEET NOTE
             if (documentLines[i].contains(NoteConstant.FINISH_SHEET_NOTE)) {
+                calculateFees(note, businessItems);
                 note.setItems(businessItems);
             }
         }
         return note;
+    }
+
+    private void statusNote(final String[] documentLines, final Integer i, Note note) {
+        if (documentLines[i].contains(NoteConstant.NUMBER_NOTE_SHETT)) {
+            throw new FileNoteBusinessException(NoteBusinessConstant.NOTE_NOT_READY);
+        }
     }
 
     private void setNumber(final String[] documentLines, final Integer i, Note note) {
@@ -147,18 +159,15 @@ class FileNoteServiceImpl implements FileNoteService {
                     .filter(it -> !it.equals(""))
                     .toArray(String[]::new);
 
-            final String nameTitle = itemArray[3].concat(" ").concat(itemArray[4]).concat(" ").concat(itemArray[5]);
-            final String nameTitleOptional = itemArray[3].concat(" ").concat(itemArray[4]);
-
             if (itemArray[2].contains(NoteConstant.SELL_OPTION)) {
                 item.setTypeMarket(NoteConstant.SELL_OPTION);
                 item.setTitleCode(itemArray[4]);
             } else if (itemArray[2].contains(NoteConstant.IN_CASH)) {
                 item.setTypeMarket(NoteConstant.IN_CASH);
-                item.setTitleCode(titleService.getByCode(nameTitle, nameTitleOptional));
+                item.setTitleCode(processTitleCodeFilter(itemArray));
             } else {
                 item.setTypeMarket(NoteConstant.FRACTIONAL);
-                item.setTitleCode(titleService.getByCode(nameTitle, nameTitleOptional));
+                item.setTitleCode(processTitleCodeFilter(itemArray));
             }
 
             final int latestPosition = itemArray.length;
@@ -168,8 +177,37 @@ class FileNoteServiceImpl implements FileNoteService {
             item.setPrice(FormatHelper.stringToBigDecimal(itemArray[latestPosition - 2]));
             item.setPriceUnit(FormatHelper.stringToBigDecimal(itemArray[latestPosition - 3]));
             item.setQuantity(FormatHelper.stringToBigDecimal(itemArray[latestPosition - 4]));
+            item.setDescription(documentLines[i]);
 
             items.add(item);
         }
+    }
+
+    private void calculateFees(final Note note, final List<NoteItem> items) {
+        for (NoteItem item : items) {
+            calculateFeeUnit(note, item);
+        }
+    }
+
+    private void calculateFeeUnit(final Note note, final NoteItem item) {
+        MathContext m = new MathContext(2);
+        final BigDecimal percentItem = item.getPrice().divide(note.getLiquidFor(), m);
+        final BigDecimal fees = note.getRegistrationFee()
+                .add(note.getSettlementFee())
+                .add(note.getTotalFeeBovespa())
+                .add(note.getTotalOperationCost());
+        item.setFeeUnit(percentItem.multiply(fees).round(m));
+    }
+
+    private String processTitleCodeFilter(final String[] itemArray) {
+        String result = null;
+        String positionInitial = itemArray[3].concat(" ").concat(itemArray[4]);
+        for (int i = 5; i < 9; i++) {
+            if (result == null) {
+                result = titleService.getByCode(positionInitial);
+                positionInitial = positionInitial.concat(" ").concat(itemArray[i]);
+            }
+        }
+        return result;
     }
 }

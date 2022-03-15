@@ -9,6 +9,7 @@ public class NoteConstant {
     public static final String REGISTER = "C.P.F./C.N.P.J/C.V.M./C.O.B.";
     public static final String DATE = "Data pregão";
     public static final String NUMBER_NOTE = "Nr. nota";
+    public static final String NUMBER_NOTE_SHETT = "Nr. nota Folha";
     public static final String FINISH_SHEET_NOTE = "Capitais e regiões metropolitanas";
     public static final String BOVESPA = "1-BOVESPA";
     public static final String IN_CASH = "VISTA";

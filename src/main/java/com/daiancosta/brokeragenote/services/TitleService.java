@@ -8,5 +8,5 @@ public interface TitleService {
 
     List<Title> findAll();
 
-    String getByCode(final String name, final String nameOptional);
+    String getByCode(final String name);
 }
