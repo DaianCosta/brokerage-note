@@ -99,8 +99,8 @@ class FileMovementServiceImpl implements FileMovementService {
                 .toArray(String[]::new);
 
         if (titleDescription.contains(MovementConstant.OPTION)) {
-            return itemArray[1];
+            return itemArray[1].trim();
         }
-        return itemArray[0];
+        return itemArray[0].trim();
     }
 }
