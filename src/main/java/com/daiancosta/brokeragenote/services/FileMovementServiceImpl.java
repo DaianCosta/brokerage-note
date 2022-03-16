@@ -94,7 +94,7 @@ class FileMovementServiceImpl implements FileMovementService {
 
     private String setTitleCode(final String titleDescription) {
 
-        final String[] itemArray = Arrays.stream(titleDescription.split(" "))
+        final String[] itemArray = Arrays.stream(titleDescription.split("-"))
                 .filter(it -> !it.equals(""))
                 .toArray(String[]::new);
 
