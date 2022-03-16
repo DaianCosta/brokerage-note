@@ -8,6 +8,7 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "note")
@@ -43,6 +44,7 @@ public class Note {
     private BigDecimal totalOptionsPurchase;//opcao de compra
     @Column(name = "total_options_sale")
     private BigDecimal totalOptionsSale;//opcao de venda
+    private UUID userId;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "note_id")

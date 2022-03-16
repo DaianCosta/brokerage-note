@@ -12,12 +12,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/import-file")
-public class ImportFileController {
+public class ImportNoteFileController {
 
     @Autowired
     StorageService storageService;
@@ -28,19 +31,18 @@ public class ImportFileController {
     @Autowired
     NoteService noteService;
 
-    @PostMapping("/upload")
+    @PostMapping("/note-upload")
     public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file,
-                                                      @RequestParam("type") TypeFileEnum typeFileEnum,
                                                       @RequestParam(value = "password", required = false) String password) {
         String message = "";
         try {
             storageService.save(file);
             final Resource fileResource = storageService.load(file.getOriginalFilename());
 
-            final Note note = fileNoteService.save("uploads/" + file.getOriginalFilename(), password);
+            final Note note = fileNoteService.mapData("uploads/" + file.getOriginalFilename(), password);
             final Note noteSaved = noteService.save(note);
             final FileInfo fileInfo = new FileInfo(file.getOriginalFilename(),
-                    typeFileEnum,
+                    TypeFileEnum.NOTE,
                     fileResource.getURL().getFile(),
                     password);
 

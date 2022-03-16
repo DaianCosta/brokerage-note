@@ -1,19 +1,18 @@
 package com.daiancosta.brokeragenote.services;
 
+import com.daiancosta.brokeragenote.domain.entities.Note;
+import com.daiancosta.brokeragenote.domain.entities.NoteItem;
 import com.daiancosta.brokeragenote.domain.entities.constants.NoteBusinessConstant;
+import com.daiancosta.brokeragenote.domain.entities.constants.NoteConstant;
+import com.daiancosta.brokeragenote.domain.entities.enums.InstitutionEnum;
 import com.daiancosta.brokeragenote.domain.entities.exceptions.FileNoteBusinessException;
 import com.daiancosta.brokeragenote.helpers.FormatHelper;
 import com.daiancosta.brokeragenote.helpers.PdfHelper;
-import com.daiancosta.brokeragenote.domain.entities.NoteItem;
-import com.daiancosta.brokeragenote.domain.entities.Note;
-import com.daiancosta.brokeragenote.domain.entities.constants.NoteConstant;
-import com.daiancosta.brokeragenote.domain.entities.enums.InstitutionEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.math.RoundingMode;
 import java.text.ParseException;
 import java.time.LocalDate;
@@ -32,7 +31,8 @@ class FileNoteServiceImpl implements FileNoteService {
         this.titleService = titleService;
     }
 
-    public Note save(final String filePath, final String password) throws IOException, ParseException {
+    @Override
+    public Note mapData(final String filePath, final String password) throws IOException, ParseException {
 
         final String pdfToText = PdfHelper.getText(filePath, password);
         System.out.println(pdfToText);
@@ -192,7 +192,7 @@ class FileNoteServiceImpl implements FileNoteService {
 
     private void calculateFeeUnit(final Note note, final NoteItem item) {
 
-        final BigDecimal percentItem = item.getPrice().divide(note.getLiquidFor(),4, RoundingMode.FLOOR);
+        final BigDecimal percentItem = item.getPrice().divide(note.getLiquidFor(), 4, RoundingMode.FLOOR);
         final BigDecimal fees = note.getRegistrationFee()
                 .add(note.getSettlementFee())
                 .add(note.getTotalFeeBovespa())

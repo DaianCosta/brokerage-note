@@ -11,7 +11,10 @@ public class FormatHelper {
             if (value.length() >= 8) {
                 newValue = newValue.replace(".", "");
             }
-            newValue = newValue.replace(",", ".");
+            newValue = newValue.replace(",", ".")
+                    .replace("-", "")
+                    .replace("R$", "")
+                    .replace(" ", "");
 
             return new BigDecimal(newValue);
         } catch (Exception e) {

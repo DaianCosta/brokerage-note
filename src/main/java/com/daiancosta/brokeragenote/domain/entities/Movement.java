@@ -7,6 +7,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Entity
 @Table(name = "movement")
@@ -20,16 +21,17 @@ public class Movement {
     private Long id;
     @Column(nullable = false)
     private LocalDate date;
-    @Column(name = "title_code")
     private String institution;
+    @Column(name = "title_code")
     private String titleCode;
-    private String description;
-    private BigDecimal quantity;
-    private BigDecimal price;
-    @Column(name = "price_unit")
-    private BigDecimal priceUnit;
-    @Column(name = "type_transaction")
-    private String typeTransaction;
     @Column(name = "type_operation")
     private String typeOperation;
+    private String description;
+    private BigDecimal quantity;
+    @Column(name = "price_unit")
+    private BigDecimal priceUnit;
+    private BigDecimal price;
+    @Column(name = "type_transaction")
+    private String typeTransaction;
+    private UUID userId;
 }

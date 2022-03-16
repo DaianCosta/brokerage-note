@@ -6,5 +6,5 @@ import java.io.IOException;
 import java.text.ParseException;
 
 public interface FileNoteService {
-    Note save(final String filePath, final String password) throws IOException, ParseException;
+    Note mapData(final String filePath, final String password) throws IOException, ParseException;
 }

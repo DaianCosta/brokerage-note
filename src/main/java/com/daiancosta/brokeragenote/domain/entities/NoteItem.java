@@ -33,7 +33,7 @@ public class NoteItem {
     private String typeTransaction;
 
     @ManyToOne
-    @JoinColumn(name="note_id")
+    @JoinColumn(name = "note_id")
     @JsonIgnore
     private Note note;
 }

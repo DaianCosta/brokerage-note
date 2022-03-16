@@ -2,6 +2,7 @@ package com.daiancosta.brokeragenote.services;
 
 import com.daiancosta.brokeragenote.domain.entities.Note;
 import com.daiancosta.brokeragenote.domain.repositories.NoteRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -10,11 +11,13 @@ import javax.transaction.Transactional;
 class NoteServiceImpl implements NoteService {
     private final NoteRepository noteRepository;
 
+    @Autowired
     NoteServiceImpl(NoteRepository noteRepository) {
         this.noteRepository = noteRepository;
     }
 
     @Transactional
+    @Override
     public Note save(final Note note) {
         deleteByNumber(note.getNumber());
         return noteRepository.save(note);
