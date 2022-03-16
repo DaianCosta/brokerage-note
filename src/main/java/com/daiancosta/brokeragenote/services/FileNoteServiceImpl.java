@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.math.RoundingMode;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -190,13 +191,14 @@ class FileNoteServiceImpl implements FileNoteService {
     }
 
     private void calculateFeeUnit(final Note note, final NoteItem item) {
-        MathContext m = new MathContext(2);
-        final BigDecimal percentItem = item.getPrice().divide(note.getLiquidFor(), m);
+
+        final BigDecimal percentItem = item.getPrice().divide(note.getLiquidFor(),4, RoundingMode.FLOOR);
         final BigDecimal fees = note.getRegistrationFee()
                 .add(note.getSettlementFee())
                 .add(note.getTotalFeeBovespa())
                 .add(note.getTotalOperationCost());
-        item.setFeeUnit(percentItem.multiply(fees).round(m));
+        final BigDecimal multiplication = percentItem.multiply(fees);
+        item.setFeeUnit(multiplication);
     }
 
     private String processTitleCodeFilter(final String[] itemArray) {

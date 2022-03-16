@@ -5,7 +5,7 @@ public class NoteConstant {
     public static final String REGISTRATION_FEE = "Taxa de Registro";
     public static final String TOTAL_BOVESPA = "Total Bovespa / Soma";
     public static final String TOTAL_OPERATION_COST ="Total Custos / Despesas";
-    public static final String LIQUID_FOR ="Líquido para";
+    public static final String LIQUID_FOR ="Valor líquido das operações";
     public static final String REGISTER = "C.P.F./C.N.P.J/C.V.M./C.O.B.";
     public static final String DATE = "Data pregão";
     public static final String NUMBER_NOTE = "Nr. nota";
