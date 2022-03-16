@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TitleRepository extends JpaRepository<Title, Integer> {
-    @Query("SELECT t.code FROM Title t WHERE t.name =:name")
+    @Query("SELECT t.code FROM Title t WHERE t.name like %:name%")
     String findByName(@Param("name") final String name);
 }
