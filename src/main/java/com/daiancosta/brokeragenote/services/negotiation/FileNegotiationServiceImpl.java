@@ -1,7 +1,6 @@
 package com.daiancosta.brokeragenote.services.negotiation;
 
 import com.daiancosta.brokeragenote.domain.entities.Negotiation;
-import com.daiancosta.brokeragenote.domain.entities.constants.MovementConstant;
 import com.daiancosta.brokeragenote.helpers.FormatHelper;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -13,7 +12,6 @@ import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -73,7 +71,7 @@ class FileNegotiationServiceImpl implements FileNegotiationService {
                             break;
                         case 6:
                             negotiation.setQuantity(FormatHelper
-                                    .stringToBigDecimal(currentCell.getStringCellValue()));
+                                    .stringToBigDecimal(format.formatCellValue(currentCell)));
                             break;
                         case 7:
                             negotiation.setPriceUnit(FormatHelper
@@ -94,17 +92,5 @@ class FileNegotiationServiceImpl implements FileNegotiationService {
         } catch (IOException e) {
             throw new RuntimeException("fail to parse Excel file: " + e.getMessage());
         }
-    }
-
-    private String setTitleCode(final String titleDescription) {
-
-        final String[] itemArray = Arrays.stream(titleDescription.split("-"))
-                .filter(it -> !it.equals(""))
-                .toArray(String[]::new);
-
-        if (titleDescription.contains(MovementConstant.OPTION)) {
-            return itemArray[1].trim();
-        }
-        return itemArray[0].trim();
     }
 }

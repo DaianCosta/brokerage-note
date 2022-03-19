@@ -207,7 +207,8 @@ class FileNoteServiceImpl implements FileNoteService {
         String positionInitial = itemArray[3].concat(" ").concat(itemArray[4]);
         for (int i = 5; i < 9; i++) {
             if (result == null) {
-                result = titleService.getByCode(positionInitial);
+                final List<String> titles = titleService.getByCode(positionInitial);
+                result = titles.size() > 1 ? null : titles.get(0);
                 positionInitial = positionInitial.concat(" ").concat(itemArray[i]);
             }
         }

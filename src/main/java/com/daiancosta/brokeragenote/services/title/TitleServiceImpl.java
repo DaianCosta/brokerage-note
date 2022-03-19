@@ -29,7 +29,7 @@ class TitleServiceImpl implements TitleService {
     }
 
     @Override
-    public String getByCode(final String name) {
+    public List<String> getByCode(final String name) {
        return titleRepository.findByName(name);
     }
 }
