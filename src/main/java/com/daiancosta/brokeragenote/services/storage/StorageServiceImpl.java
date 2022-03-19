@@ -1,4 +1,4 @@
-package com.daiancosta.brokeragenote.services;
+package com.daiancosta.brokeragenote.services.storage;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;

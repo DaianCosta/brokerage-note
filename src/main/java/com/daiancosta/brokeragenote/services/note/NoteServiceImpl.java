@@ -1,4 +1,4 @@
-package com.daiancosta.brokeragenote.services;
+package com.daiancosta.brokeragenote.services.note;
 
 import com.daiancosta.brokeragenote.domain.entities.Note;
 import com.daiancosta.brokeragenote.domain.repositories.NoteRepository;

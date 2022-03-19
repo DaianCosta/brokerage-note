@@ -1,5 +1,6 @@
 package com.daiancosta.brokeragenote.domain.entities;
 
+import com.daiancosta.brokeragenote.domain.entities.enums.TypeTitleEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,12 +23,14 @@ public class NoteItem {
     private String typeMarket;
     @Column(name = "type_operation")
     private String typeOperation;
+    @Column(name = "type_title")
+    private TypeTitleEnum typeTitle;
     private String description;
     private BigDecimal quantity;
     @Column(name = "price_unit")
     private BigDecimal priceUnit;
     private BigDecimal price;
-    @Column(name = "fee_unit")
+    @Column(name = "fee_unit", scale = 4, precision = 19)
     private BigDecimal feeUnit;
     @Column(name = "type_transaction")
     private String typeTransaction;

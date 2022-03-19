@@ -1,6 +1,5 @@
 package com.daiancosta.brokeragenote.domain.entities;
 
-import com.daiancosta.brokeragenote.domain.entities.enums.TypeTitleEnum;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,30 +10,27 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
-@Table(name = "movement")
+@Table(name = "negotiation")
 @Data
 @Getter
 @Setter
-public class Movement {
+public class Negotiation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false)
     private LocalDate date;
+    @Column(name = "movement_type")
+    private String movementType;
+    private String market;
+    private LocalDate deadline;
     private String institution;
     @Column(name = "title_code")
     private String titleCode;
-    @Column(name = "type_operation")
-    private String typeOperation;
-    @Column(name = "type_title")
-    private TypeTitleEnum typeTitle;
-    private String description;
     private BigDecimal quantity;
     @Column(name = "price_unit")
     private BigDecimal priceUnit;
     private BigDecimal price;
-    @Column(name = "type_transaction")
-    private String typeTransaction;
+    @Column(name = "user_id")
     private UUID userId;
 }

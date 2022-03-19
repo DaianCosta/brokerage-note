@@ -1,4 +1,4 @@
-package com.daiancosta.brokeragenote.services;
+package com.daiancosta.brokeragenote.services.movement;
 
 import com.daiancosta.brokeragenote.domain.entities.Movement;
 

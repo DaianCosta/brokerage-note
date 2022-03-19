@@ -1,12 +1,12 @@
 package com.daiancosta.brokeragenote.controllers;
 
 import com.daiancosta.brokeragenote.domain.entities.FileInfo;
-import com.daiancosta.brokeragenote.domain.entities.Movement;
+import com.daiancosta.brokeragenote.domain.entities.Negotiation;
 import com.daiancosta.brokeragenote.domain.entities.enums.TypeFileEnum;
 import com.daiancosta.brokeragenote.domain.entities.exceptions.FileNoteBusinessException;
 import com.daiancosta.brokeragenote.domain.entities.messages.ResponseMessage;
-import com.daiancosta.brokeragenote.services.movement.FileMovementService;
-import com.daiancosta.brokeragenote.services.movement.MovementService;
+import com.daiancosta.brokeragenote.services.negotiation.FileNegotiationService;
+import com.daiancosta.brokeragenote.services.negotiation.NegotiationService;
 import com.daiancosta.brokeragenote.services.storage.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,29 +21,29 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/import-file")
-public class ImportMovementFileController {
+public class ImportNegotiationFileController {
 
     @Autowired
     StorageService storageService;
 
     @Autowired
-    FileMovementService fileMovementService;
+    FileNegotiationService fileNegotiationService;
 
     @Autowired
-    MovementService movementService;
+    NegotiationService negotiationService;
 
-    @PostMapping("/movement-upload")
+    @PostMapping("/negociation-upload")
     public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file) {
         String message = "";
         try {
             //storageService.save(file);
             //final Resource fileResource = storageService.load(file.getOriginalFilename());
 
-            final List<Movement> movements = fileMovementService.mapData(file.getInputStream());
-            final Boolean movementSaved = movementService.save(movements);
+            final List<Negotiation> negotiations = fileNegotiationService.mapData(file.getInputStream());
+            final Boolean negotiationSaved = negotiationService.save(negotiations);
             final FileInfo fileInfo = new FileInfo(file.getOriginalFilename(),
-                    TypeFileEnum.MOVEMENT,
-                  "",
+                    TypeFileEnum.NEGOTIATION,
+                    "",
                     null);
 
             message = "Uploaded the file successfully: " + file.getOriginalFilename();

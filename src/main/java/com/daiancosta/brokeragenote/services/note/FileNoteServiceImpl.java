@@ -1,4 +1,4 @@
-package com.daiancosta.brokeragenote.services;
+package com.daiancosta.brokeragenote.services.note;
 
 import com.daiancosta.brokeragenote.domain.entities.Note;
 import com.daiancosta.brokeragenote.domain.entities.NoteItem;
@@ -8,6 +8,7 @@ import com.daiancosta.brokeragenote.domain.entities.enums.InstitutionEnum;
 import com.daiancosta.brokeragenote.domain.entities.exceptions.FileNoteBusinessException;
 import com.daiancosta.brokeragenote.helpers.FormatHelper;
 import com.daiancosta.brokeragenote.helpers.PdfHelper;
+import com.daiancosta.brokeragenote.services.title.TitleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -192,7 +193,7 @@ class FileNoteServiceImpl implements FileNoteService {
 
     private void calculateFeeUnit(final Note note, final NoteItem item) {
 
-        final BigDecimal percentItem = item.getPrice().divide(note.getLiquidFor(), 4, RoundingMode.FLOOR);
+        final BigDecimal percentItem = item.getPrice().divide(note.getLiquidFor(), 10, RoundingMode.FLOOR);
         final BigDecimal fees = note.getRegistrationFee()
                 .add(note.getSettlementFee())
                 .add(note.getTotalFeeBovespa())

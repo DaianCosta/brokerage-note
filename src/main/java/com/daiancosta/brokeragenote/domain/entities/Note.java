@@ -44,6 +44,7 @@ public class Note {
     private BigDecimal totalOptionsPurchase;//opcao de compra
     @Column(name = "total_options_sale")
     private BigDecimal totalOptionsSale;//opcao de venda
+    @Column(name = "user_id")
     private UUID userId;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)

@@ -1,6 +1,6 @@
 package com.daiancosta.brokeragenote;
 
-import com.daiancosta.brokeragenote.services.StorageService;
+import com.daiancosta.brokeragenote.services.storage.StorageService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
