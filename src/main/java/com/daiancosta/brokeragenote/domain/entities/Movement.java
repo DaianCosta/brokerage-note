@@ -36,5 +36,6 @@ public class Movement {
     private BigDecimal price;
     @Column(name = "type_transaction")
     private String typeTransaction;
+    @Column(name = "user_id")
     private UUID userId;
 }

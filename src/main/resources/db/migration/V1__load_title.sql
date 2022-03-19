@@ -2,7 +2,7 @@ CREATE TABLE title (
 	id INT NOT NULL AUTO_INCREMENT,
 	name varchar(255) NOT NULL,
 	code VARCHAR(20) NOT NULL,
-	type VARCHAR(20) NOT NULL
+	type VARCHAR(20) NOT NULL,
 	PRIMARY KEY ( id )
 );
 
