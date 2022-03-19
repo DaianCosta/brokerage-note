@@ -32,7 +32,7 @@ public class ImportNegotiationFileController {
     @Autowired
     NegotiationService negotiationService;
 
-    @PostMapping("/negociation-upload")
+    @PostMapping("/negotiation-upload")
     public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file) {
         String message = "";
         try {

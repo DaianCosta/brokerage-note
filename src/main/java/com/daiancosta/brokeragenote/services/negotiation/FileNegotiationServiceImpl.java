@@ -20,7 +20,7 @@ import java.util.List;
 @Service
 class FileNegotiationServiceImpl implements FileNegotiationService {
     private static final String TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-    private static final String SHEET = "Movimentação";
+    private static final String SHEET = "Negociação";
 
     public boolean hasExcelFormat(MultipartFile file) {
         return TYPE.equals(file.getContentType());
