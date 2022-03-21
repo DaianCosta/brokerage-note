@@ -16,4 +16,5 @@ public class NoteConstant {
     public static final String SELL_OPTION = "OPCAO DE VENDA";
     public static final String FRACTIONAL = "FRACIONARIO";
     public static final String BUSINESS_SUMMARY = "Resumo dos Negócios";
+    public static final String FII = "FII";
 }

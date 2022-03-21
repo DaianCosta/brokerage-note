@@ -1,5 +1,6 @@
 package com.daiancosta.brokeragenote.domain.entities;
 
+import com.daiancosta.brokeragenote.domain.entities.constants.TypeTitle;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,6 +28,8 @@ public class Negotiation {
     private String institution;
     @Column(name = "title_code")
     private String titleCode;
+    @Column(name = "type_title")
+    private String typeTitle;
     private BigDecimal quantity;
     @Column(name = "price_unit")
     private BigDecimal priceUnit;

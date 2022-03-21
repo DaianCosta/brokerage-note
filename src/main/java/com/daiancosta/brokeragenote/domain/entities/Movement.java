@@ -1,6 +1,6 @@
 package com.daiancosta.brokeragenote.domain.entities;
 
-import com.daiancosta.brokeragenote.domain.entities.enums.TypeTitleEnum;
+import com.daiancosta.brokeragenote.domain.entities.constants.TypeTitle;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,7 +28,7 @@ public class Movement {
     @Column(name = "type_operation")
     private String typeOperation;
     @Column(name = "type_title")
-    private TypeTitleEnum typeTitle;
+    private String  typeTitle;
     private String description;
     private BigDecimal quantity;
     @Column(name = "price_unit")

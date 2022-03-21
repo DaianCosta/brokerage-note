@@ -4,6 +4,7 @@ import com.daiancosta.brokeragenote.domain.entities.Note;
 import com.daiancosta.brokeragenote.domain.entities.NoteItem;
 import com.daiancosta.brokeragenote.domain.entities.constants.NoteBusinessConstant;
 import com.daiancosta.brokeragenote.domain.entities.constants.NoteConstant;
+import com.daiancosta.brokeragenote.domain.entities.constants.TypeTitle;
 import com.daiancosta.brokeragenote.domain.entities.enums.InstitutionEnum;
 import com.daiancosta.brokeragenote.domain.entities.exceptions.FileNoteBusinessException;
 import com.daiancosta.brokeragenote.helpers.FormatHelper;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.math.RoundingMode;
 import java.text.ParseException;
 import java.time.LocalDate;
@@ -44,7 +46,7 @@ class FileNoteServiceImpl implements FileNoteService {
         final List<NoteItem> businessItems = new ArrayList<>();
 
         for (int i = 0; i < documentLines.length; i++) {
-            statusNote(documentLines, i, note);
+            statusNote(documentLines, i);
             setNumber(documentLines, i, note);
             setDate(documentLines, i, note);
             setInstitution(documentLines, i, note);
@@ -66,7 +68,7 @@ class FileNoteServiceImpl implements FileNoteService {
         return note;
     }
 
-    private void statusNote(final String[] documentLines, final Integer i, Note note) {
+    private void statusNote(final String[] documentLines, final Integer i) {
         if (documentLines[i].contains(NoteConstant.NUMBER_NOTE_SHETT)) {
             throw new FileNoteBusinessException(NoteBusinessConstant.NOTE_NOT_READY);
         }
@@ -109,6 +111,7 @@ class FileNoteServiceImpl implements FileNoteService {
             note.setTotalInCashPurchases(FormatHelper.stringToBigDecimal(documentLines[i - 6]));
             note.setTotalOptionsPurchase(FormatHelper.stringToBigDecimal(documentLines[i - 5]));
             note.setTotalOptionsSale(FormatHelper.stringToBigDecimal(documentLines[i - 4]));
+            note.setTotalGross(FormatHelper.stringToBigDecimal(documentLines[i - 1]));
         }
     }
 
@@ -161,10 +164,12 @@ class FileNoteServiceImpl implements FileNoteService {
                     .filter(it -> !it.equals(""))
                     .toArray(String[]::new);
 
-            if (itemArray[2].contains(NoteConstant.SELL_OPTION)) {
+            item.setTypeTitle(setTypeTitle(documentLines[i]));
+            if (documentLines[i].contains(NoteConstant.SELL_OPTION)) {
                 item.setTypeMarket(NoteConstant.SELL_OPTION);
-                item.setTitleCode(itemArray[4]);
-            } else if (itemArray[2].contains(NoteConstant.IN_CASH)) {
+                item.setTitleCode(itemArray[6]);
+                item.setTypeTitle(TypeTitle.OPTION);
+            } else if (documentLines[i].contains(NoteConstant.IN_CASH)) {
                 item.setTypeMarket(NoteConstant.IN_CASH);
                 item.setTitleCode(processTitleCodeFilter(itemArray));
             } else {
@@ -185,6 +190,13 @@ class FileNoteServiceImpl implements FileNoteService {
         }
     }
 
+    private String setTypeTitle(final String row) {
+        if (row.contains(NoteConstant.FII)) {
+            return TypeTitle.FII;
+        }
+        return TypeTitle.ACTION;
+    }
+
     private void calculateFees(final Note note, final List<NoteItem> items) {
         for (NoteItem item : items) {
             calculateFeeUnit(note, item);
@@ -193,12 +205,13 @@ class FileNoteServiceImpl implements FileNoteService {
 
     private void calculateFeeUnit(final Note note, final NoteItem item) {
 
-        final BigDecimal percentItem = item.getPrice().divide(note.getLiquidFor(), 10, RoundingMode.FLOOR);
+        final BigDecimal percentItem = item.getPrice().divide(note.getTotalGross(), 4, RoundingMode.FLOOR);
         final BigDecimal fees = note.getRegistrationFee()
                 .add(note.getSettlementFee())
                 .add(note.getTotalFeeBovespa())
                 .add(note.getTotalOperationCost());
-        final BigDecimal multiplication = percentItem.multiply(fees);
+        final MathContext mc = new MathContext(3, RoundingMode.HALF_UP);
+        final BigDecimal multiplication = percentItem.multiply(fees, mc);
         item.setFeeUnit(multiplication);
     }
 

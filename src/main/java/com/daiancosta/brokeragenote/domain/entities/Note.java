@@ -30,6 +30,8 @@ public class Note {
     private BigDecimal settlementFee;//taxa de liquidacao
     @Column(name = "registration_fee")
     private BigDecimal registrationFee;//taxa de registro
+    @Column(name = "total_gross")
+    private BigDecimal totalGross;//valor das operacoes
     @Column(name = "total_fee_bovespa")
     private BigDecimal totalFeeBovespa;//total taxa bovespa
     @Column(name = "total_operation_cost")
