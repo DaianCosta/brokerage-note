@@ -1,9 +1,14 @@
 package com.daiancosta.brokeragenote.services.negotiation;
 
 import com.daiancosta.brokeragenote.domain.entities.Negotiation;
+import com.daiancosta.brokeragenote.domain.entities.Title;
+import com.daiancosta.brokeragenote.domain.entities.constants.MovementConstant;
+import com.daiancosta.brokeragenote.domain.entities.constants.TypeTitle;
+import com.daiancosta.brokeragenote.domain.repositories.TitleRepository;
 import com.daiancosta.brokeragenote.helpers.FormatHelper;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,8 +22,15 @@ import java.util.List;
 
 @Service
 class FileNegotiationServiceImpl implements FileNegotiationService {
+
+    private final TitleRepository titleRepository;
     private static final String TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
     private static final String SHEET = "Negociação";
+
+    @Autowired
+    FileNegotiationServiceImpl(TitleRepository titleRepository) {
+        this.titleRepository = titleRepository;
+    }
 
     public boolean hasExcelFormat(MultipartFile file) {
         return TYPE.equals(file.getContentType());
@@ -85,12 +97,24 @@ class FileNegotiationServiceImpl implements FileNegotiationService {
                     }
                     cellIdx++;
                 }
+                setTypeTitle(negotiation);
                 negotiations.add(negotiation);
             }
             workbook.close();
             return negotiations;
         } catch (IOException e) {
             throw new RuntimeException("fail to parse Excel file: " + e.getMessage());
+        }
+    }
+
+    private void setTypeTitle(final Negotiation negotiation) {
+        if (negotiation.getMarket().contains(MovementConstant.OPTION)) {
+           negotiation.setTypeTitle(TypeTitle.OPTION);
+        } else {
+            final Title titleCodeResult = titleRepository.getByCode(negotiation.getTitleCode());
+            if(titleCodeResult != null){
+                negotiation.setTypeTitle(titleCodeResult.getType());
+            }
         }
     }
 }

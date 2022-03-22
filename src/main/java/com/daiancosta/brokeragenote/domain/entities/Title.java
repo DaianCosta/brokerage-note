@@ -18,4 +18,5 @@ public class Title {
     private Integer id;
     private String name;
     private String code;
+    private String type;
 }

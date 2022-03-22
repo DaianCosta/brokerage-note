@@ -2,6 +2,7 @@ package com.daiancosta.brokeragenote.services.movement;
 
 import com.daiancosta.brokeragenote.domain.entities.Movement;
 import com.daiancosta.brokeragenote.domain.entities.constants.MovementConstant;
+import com.daiancosta.brokeragenote.domain.entities.constants.TypeTitle;
 import com.daiancosta.brokeragenote.helpers.FormatHelper;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -12,10 +13,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Service
 class FileMovementServiceImpl implements FileMovementService {
@@ -60,7 +59,7 @@ class FileMovementServiceImpl implements FileMovementService {
                             movement.setTypeOperation(currentCell.getStringCellValue());
                             break;
                         case 3:
-                            movement.setTitleCode(setTitleCode(currentCell.getStringCellValue()));
+                            setTitleCode(currentCell.getStringCellValue(), movement);
                             movement.setDescription(currentCell.getStringCellValue());
                             break;
                         case 4:
@@ -92,15 +91,26 @@ class FileMovementServiceImpl implements FileMovementService {
         }
     }
 
-    private String setTitleCode(final String titleDescription) {
+    private void setTitleCode(final String titleDescription, final Movement movement) {
 
         final String[] itemArray = Arrays.stream(titleDescription.split("-"))
                 .filter(it -> !it.equals(""))
                 .toArray(String[]::new);
 
         if (titleDescription.contains(MovementConstant.OPTION)) {
-            return itemArray[1].trim();
+            movement.setTitleCode(itemArray[1].trim());
+            movement.setTypeTitle(TypeTitle.OPTION);
+        } else {
+            int totalItems = (int) Arrays.stream(itemArray).map(i -> Arrays.stream(itemArray)
+                    .filter(a -> a.equals(i)).findAny()).filter(Optional::isPresent).count();
+
+            if (totalItems > 0) {
+                movement.setTypeTitle(TypeTitle.FII);
+            } else {
+                movement.setTypeTitle(TypeTitle.ACTION);
+            }
+
+            movement.setTitleCode(itemArray[0].trim());
         }
-        return itemArray[0].trim();
     }
 }

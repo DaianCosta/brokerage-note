@@ -12,4 +12,6 @@ import java.util.List;
 public interface TitleRepository extends JpaRepository<Title, Integer> {
     @Query("SELECT t.code FROM Title t WHERE t.name like %:name%")
     List<String> findByName(@Param("name") final String name);
+
+    Title getByCode(final String code);
 }
