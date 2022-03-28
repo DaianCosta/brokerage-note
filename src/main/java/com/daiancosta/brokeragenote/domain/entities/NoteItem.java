@@ -31,7 +31,7 @@ public class NoteItem {
     @Column(name = "price_unit")
     private BigDecimal priceUnit;
     private BigDecimal price;
-    @Column(name = "fee_unit")
+    @Column(name = "fee_unit", precision = 19, scale = 9)
     private BigDecimal feeUnit;
     @Column(name = "type_transaction")
     private String typeTransaction;

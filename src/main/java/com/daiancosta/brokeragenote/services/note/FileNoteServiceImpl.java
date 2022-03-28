@@ -171,7 +171,7 @@ class FileNoteServiceImpl implements FileNoteService {
 
             item.setTypeTitle(setTypeTitle(documentLines[i]));
             if (documentLines[i].contains(NoteConstant.SELL_OPTION)) {
-                item.setTypeMarket(NoteConstant.SELL_OPTION);
+                item.setTypeMarket(itemArray[2].concat(" ").concat(itemArray[3].concat(" ").concat(itemArray[4])));
                 item.setTitleCode(itemArray[6]);
                 item.setTypeTitle(TypeTitle.OPTION);
             } else if (documentLines[i].contains(NoteConstant.IN_CASH)) {
@@ -210,12 +210,12 @@ class FileNoteServiceImpl implements FileNoteService {
 
     private void calculateFeeUnit(final Note note, final NoteItem item) {
 
-        final BigDecimal percentItem = item.getPrice().divide(note.getTotalGross(), 4, RoundingMode.FLOOR);
+        final BigDecimal percentItem = item.getPrice().divide(note.getTotalGross(), 8, RoundingMode.HALF_UP);
         final BigDecimal fees = note.getRegistrationFee()
                 .add(note.getSettlementFee())
                 .add(note.getTotalFeeBovespa())
                 .add(note.getTotalOperationCost());
-        final MathContext mc = new MathContext(3, RoundingMode.HALF_UP);
+        final MathContext mc = new MathContext(9);
         final BigDecimal multiplication = percentItem.multiply(fees, mc);
         item.setFeeUnit(multiplication);
     }
