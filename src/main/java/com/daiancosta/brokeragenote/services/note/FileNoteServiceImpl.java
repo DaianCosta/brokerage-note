@@ -7,6 +7,7 @@ import com.daiancosta.brokeragenote.domain.entities.constants.NoteConstant;
 import com.daiancosta.brokeragenote.domain.entities.constants.TypeTitle;
 import com.daiancosta.brokeragenote.domain.entities.enums.InstitutionEnum;
 import com.daiancosta.brokeragenote.domain.entities.exceptions.FileNoteBusinessException;
+import com.daiancosta.brokeragenote.domain.entities.exceptions.FileNoteException;
 import com.daiancosta.brokeragenote.helpers.FormatHelper;
 import com.daiancosta.brokeragenote.helpers.PdfHelper;
 import com.daiancosta.brokeragenote.services.title.TitleService;
@@ -14,10 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -35,37 +36,41 @@ class FileNoteServiceImpl implements FileNoteService {
     }
 
     @Override
-    public Note mapData(final String filePath, final String password) throws IOException, ParseException {
+    public Note mapData(final InputStream file, final String password) {
 
-        final String pdfToText = PdfHelper.getText(filePath, password);
-        System.out.println(pdfToText);
+        try {
+            final String pdfToText = PdfHelper.getText(file, password);
+            //¬System.out.println(pdfToText);
 
-        String[] documentLines = pdfToText.split("\r\n|\r|\n");
+            String[] documentLines = pdfToText.split("\r\n|\r|\n");
 
-        final Note note = new Note();
-        final List<NoteItem> businessItems = new ArrayList<>();
+            final Note note = new Note();
+            final List<NoteItem> businessItems = new ArrayList<>();
 
-        for (int i = 0; i < documentLines.length; i++) {
-            statusNote(documentLines, i);
-            setNumber(documentLines, i, note);
-            setDate(documentLines, i, note);
-            setInstitution(documentLines, i, note);
-            setRegister(documentLines, i, note);
-            setSettlementFee(documentLines, i, note);
-            setRegistrationFee(documentLines, i, note);
-            setTotalBovespa(documentLines, i, note);
-            setTotalOperationCost(documentLines, i, note);
-            setLiquidFor(documentLines, i, note);
-            setTotalTypeMarket(documentLines, i, note);
-            setItems(documentLines, i, businessItems);
+            for (int i = 0; i < documentLines.length; i++) {
+                statusNote(documentLines, i);
+                setNumber(documentLines, i, note);
+                setDate(documentLines, i, note);
+                setInstitution(documentLines, i, note);
+                setRegister(documentLines, i, note);
+                setSettlementFee(documentLines, i, note);
+                setRegistrationFee(documentLines, i, note);
+                setTotalBovespa(documentLines, i, note);
+                setTotalOperationCost(documentLines, i, note);
+                setLiquidFor(documentLines, i, note);
+                setTotalTypeMarket(documentLines, i, note);
+                setItems(documentLines, i, businessItems);
 
-            //FINISH SHEET NOTE
-            if (documentLines[i].contains(NoteConstant.FINISH_SHEET_NOTE)) {
-                calculateFees(note, businessItems);
-                note.setItems(businessItems);
+                //FINISH SHEET NOTE
+                if (documentLines[i].contains(NoteConstant.FINISH_SHEET_NOTE)) {
+                    calculateFees(note, businessItems);
+                    note.setItems(businessItems);
+                }
             }
+            return note;
+        } catch (IOException e) {
+            throw new FileNoteException("fail to parse Excel file: " + e.getMessage());
         }
-        return note;
     }
 
     private void statusNote(final String[] documentLines, final Integer i) {
@@ -80,7 +85,7 @@ class FileNoteServiceImpl implements FileNoteService {
         }
     }
 
-    private void setDate(final String[] documentLines, final Integer i, Note note) throws ParseException {
+    private void setDate(final String[] documentLines, final Integer i, Note note) {
         if (documentLines[i].contains(NoteConstant.DATE)) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             final LocalDate parseDate = LocalDate.parse(documentLines[i + 1], formatter);

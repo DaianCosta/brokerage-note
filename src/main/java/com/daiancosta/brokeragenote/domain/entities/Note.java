@@ -13,8 +13,6 @@ import java.util.UUID;
 @Entity
 @Table(name = "note")
 @Data
-@Getter
-@Setter
 public class Note {
 
     @Id

@@ -2,6 +2,8 @@ package com.daiancosta.brokeragenote.domain.entities;
 
 import com.daiancosta.brokeragenote.domain.entities.constants.TypeTitle;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,8 +12,7 @@ import java.math.BigDecimal;
 
 @Entity
 @Table(name = "note_item")
-@Getter
-@Setter
+@Data
 public class NoteItem {
 
     @Id

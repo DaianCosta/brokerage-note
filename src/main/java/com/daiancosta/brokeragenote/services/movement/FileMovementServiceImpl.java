@@ -3,6 +3,7 @@ package com.daiancosta.brokeragenote.services.movement;
 import com.daiancosta.brokeragenote.domain.entities.Movement;
 import com.daiancosta.brokeragenote.domain.entities.constants.MovementConstant;
 import com.daiancosta.brokeragenote.domain.entities.constants.TypeTitle;
+import com.daiancosta.brokeragenote.domain.entities.exceptions.FileMovementException;
 import com.daiancosta.brokeragenote.helpers.FormatHelper;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -87,7 +88,7 @@ class FileMovementServiceImpl implements FileMovementService {
             workbook.close();
             return movements;
         } catch (IOException e) {
-            throw new RuntimeException("fail to parse Excel file: " + e.getMessage());
+            throw new FileMovementException("fail to parse Excel file: " + e.getMessage());
         }
     }
 

@@ -7,11 +7,7 @@ public class FormatHelper {
     public static BigDecimal stringToBigDecimal(final String value) {
         try {
 
-            String newValue = value;
-            if (value.length() >= 8) {
-                newValue = newValue.replace(".", "");
-            }
-            newValue = newValue.replace(",", ".")
+            final String newValue = value.replace(".", "").replace(",", ".")
                     .replace("-", "")
                     .replace("R$", "")
                     .replace(" ", "");

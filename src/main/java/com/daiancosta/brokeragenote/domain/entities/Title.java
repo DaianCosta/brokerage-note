@@ -9,8 +9,6 @@ import javax.persistence.*;
 @Entity
 @Table(name = "title")
 @Data
-@Getter
-@Setter
 public class Title {
 
     @Id

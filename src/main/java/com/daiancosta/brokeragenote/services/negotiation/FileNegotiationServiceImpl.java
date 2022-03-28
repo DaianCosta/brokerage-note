@@ -4,6 +4,7 @@ import com.daiancosta.brokeragenote.domain.entities.Negotiation;
 import com.daiancosta.brokeragenote.domain.entities.Title;
 import com.daiancosta.brokeragenote.domain.entities.constants.MovementConstant;
 import com.daiancosta.brokeragenote.domain.entities.constants.TypeTitle;
+import com.daiancosta.brokeragenote.domain.entities.exceptions.FileNegotiationException;
 import com.daiancosta.brokeragenote.domain.repositories.TitleRepository;
 import com.daiancosta.brokeragenote.helpers.FormatHelper;
 import org.apache.poi.ss.usermodel.*;
@@ -88,6 +89,7 @@ class FileNegotiationServiceImpl implements FileNegotiationService {
                         case 7:
                             negotiation.setPriceUnit(FormatHelper
                                     .stringToBigDecimal(format.formatCellValue(currentCell)));
+                            break;
                         case 8:
                             negotiation.setPrice(FormatHelper
                                     .stringToBigDecimal(format.formatCellValue(currentCell)));
@@ -103,16 +105,16 @@ class FileNegotiationServiceImpl implements FileNegotiationService {
             workbook.close();
             return negotiations;
         } catch (IOException e) {
-            throw new RuntimeException("fail to parse Excel file: " + e.getMessage());
+            throw new FileNegotiationException("fail to parse Excel file: " + e.getMessage());
         }
     }
 
     private void setTypeTitle(final Negotiation negotiation) {
         if (negotiation.getMarket().contains(MovementConstant.OPTION)) {
-           negotiation.setTypeTitle(TypeTitle.OPTION);
+            negotiation.setTypeTitle(TypeTitle.OPTION);
         } else {
             final Title titleCodeResult = titleRepository.getByCode(negotiation.getTitleCode());
-            if(titleCodeResult != null){
+            if (titleCodeResult != null) {
                 negotiation.setTypeTitle(titleCodeResult.getType());
             }
         }

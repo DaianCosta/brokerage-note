@@ -2,14 +2,16 @@ package com.daiancosta.brokeragenote.helpers;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class PdfHelper {
-    public static String getText(final String filePath, final String password) throws IOException {
+    public static String getText(final InputStream input, final String password) throws IOException {
 
-        final File input = new File(filePath);
         PDDocument document;
         if (password != null) {
             document = PDDocument.load(input, password);

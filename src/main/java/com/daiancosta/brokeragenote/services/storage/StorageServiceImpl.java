@@ -1,5 +1,6 @@
 package com.daiancosta.brokeragenote.services.storage;
 
+import com.daiancosta.brokeragenote.domain.entities.exceptions.FileStorageException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -27,7 +28,7 @@ class StorageServiceImpl implements StorageService {
                 Files.createDirectory(Paths.get(path));
             }
         } catch (IOException e) {
-            throw new RuntimeException("Could not initialize folder for upload!");
+            throw new FileStorageException("Could not initialize folder for upload!");
         }
     }
 
@@ -39,10 +40,10 @@ class StorageServiceImpl implements StorageService {
             if (resource.exists() || resource.isReadable()) {
                 return resource;
             } else {
-                throw new RuntimeException("Could not read the file!");
+                throw new FileStorageException("Could not read the file!");
             }
         } catch (MalformedURLException e) {
-            throw new RuntimeException("Error: " + e.getMessage());
+            throw new FileStorageException("Error: " + e.getMessage());
         }
     }
 
@@ -51,12 +52,16 @@ class StorageServiceImpl implements StorageService {
         try {
             Files.copy(file.getInputStream(), Paths.get(path).resolve(Objects.requireNonNull(file.getOriginalFilename())));
         } catch (Exception e) {
-            throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
+            throw new FileStorageException("Could not store the file. Error: " + e.getMessage());
         }
     }
 
     @Override
     public void deleteAll() {
+        try {
         FileSystemUtils.deleteRecursively(Paths.get(path).toFile());
+        } catch (Exception e) {
+            throw new FileStorageException("Could not delete the file. Error: " + e.getMessage());
+        }
     }
 }

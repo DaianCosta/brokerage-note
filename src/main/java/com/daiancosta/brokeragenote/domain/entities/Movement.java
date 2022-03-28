@@ -1,6 +1,7 @@
 package com.daiancosta.brokeragenote.domain.entities;
 
 import com.daiancosta.brokeragenote.domain.entities.constants.TypeTitle;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,8 +14,6 @@ import java.util.UUID;
 @Entity
 @Table(name = "movement")
 @Data
-@Getter
-@Setter
 public class Movement {
 
     @Id
