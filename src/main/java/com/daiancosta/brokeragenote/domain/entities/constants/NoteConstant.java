@@ -1,6 +1,7 @@
 package com.daiancosta.brokeragenote.domain.entities.constants;
 
 public class NoteConstant {
+    private NoteConstant(){}
     public static final String SETTLEMENT_FEE = "Taxa de liquidação";
     public static final String REGISTRATION_FEE = "Taxa de Registro";
     public static final String TOTAL_BOVESPA = "Total Bovespa / Soma";

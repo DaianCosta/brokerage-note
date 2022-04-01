@@ -15,7 +15,6 @@ import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 @Service
 class FileMovementServiceImpl implements FileMovementService {
@@ -102,10 +101,11 @@ class FileMovementServiceImpl implements FileMovementService {
             movement.setTitleCode(itemArray[1].trim());
             movement.setTypeTitle(TypeTitle.OPTION);
         } else {
-            int totalItems = (int) Arrays.stream(itemArray).map(i -> Arrays.stream(itemArray)
-                    .filter(a -> a.equals(i)).findAny()).filter(Optional::isPresent).count();
+            final Boolean existsFii = Arrays.stream(itemArray)
+                    .anyMatch(i-> Arrays.stream(MovementConstant.FII_S)
+                            .anyMatch(b->b.contains(i)));
 
-            if (totalItems > 0) {
+            if (Boolean.TRUE.equals(existsFii)) {
                 movement.setTypeTitle(TypeTitle.FII);
             } else {
                 movement.setTypeTitle(TypeTitle.ACTION);

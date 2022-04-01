@@ -6,7 +6,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
+import java.util.List;
 
 public interface FileNoteService {
-    Note mapData(final InputStream file, final String password);
+    List<Note> mapData(final InputStream file, final String password);
 }

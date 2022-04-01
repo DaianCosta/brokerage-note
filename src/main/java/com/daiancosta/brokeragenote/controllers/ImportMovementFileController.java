@@ -7,7 +7,6 @@ import com.daiancosta.brokeragenote.domain.entities.exceptions.FileNoteBusinessE
 import com.daiancosta.brokeragenote.domain.entities.messages.ResponseMessage;
 import com.daiancosta.brokeragenote.services.movement.FileMovementService;
 import com.daiancosta.brokeragenote.services.movement.MovementService;
-import com.daiancosta.brokeragenote.services.storage.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,9 +21,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/import-file")
 public class ImportMovementFileController {
-
-    @Autowired
-    StorageService storageService;
 
     @Autowired
     FileMovementService fileMovementService;
@@ -43,7 +39,7 @@ public class ImportMovementFileController {
             final Boolean movementSaved = movementService.save(movements);
             final FileInfo fileInfo = new FileInfo(file.getOriginalFilename(),
                     TypeFileEnum.MOVEMENT,
-                  "",
+                    "",
                     null);
 
             message = "Uploaded the file successfully: " + file.getOriginalFilename();

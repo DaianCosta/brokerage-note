@@ -1,11 +1,7 @@
 package com.daiancosta.brokeragenote.domain.entities;
 
-import com.daiancosta.brokeragenote.domain.entities.constants.TypeTitle;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.math.BigDecimal;

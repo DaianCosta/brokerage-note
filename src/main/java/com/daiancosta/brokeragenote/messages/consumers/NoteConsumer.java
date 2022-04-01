@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.List;
 
 @Component
 public class NoteConsumer {
@@ -28,7 +29,7 @@ public class NoteConsumer {
     @RabbitListener(queues = {"${brokerage.rabbitmq.queue}"})
     public void receive(@Payload NoteProducerMessage noteProducerMessage) {
         final InputStream file = new ByteArrayInputStream(noteProducerMessage.getFile());
-        final Note note = fileNoteService.mapData(file, noteProducerMessage.getPassword());
-        noteService.save(note);
+        final List<Note> notes = fileNoteService.mapData(file, noteProducerMessage.getPassword());
+        noteService.saveAll(notes);
     }
 }

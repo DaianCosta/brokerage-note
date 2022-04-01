@@ -36,16 +36,17 @@ class FileNoteServiceImpl implements FileNoteService {
     }
 
     @Override
-    public Note mapData(final InputStream file, final String password) {
+    public List<Note> mapData(final InputStream file, final String password) {
 
         try {
             final String pdfToText = PdfHelper.getText(file, password);
-            //¬System.out.println(pdfToText);
+            System.out.println(pdfToText);
 
             String[] documentLines = pdfToText.split("\r\n|\r|\n");
 
-            final Note note = new Note();
-            final List<NoteItem> businessItems = new ArrayList<>();
+            final List<Note> notes = new ArrayList<>();
+            Note note = new Note();
+            List<NoteItem> items = new ArrayList<>();
 
             for (int i = 0; i < documentLines.length; i++) {
                 statusNote(documentLines, i);
@@ -59,17 +60,20 @@ class FileNoteServiceImpl implements FileNoteService {
                 setTotalOperationCost(documentLines, i, note);
                 setLiquidFor(documentLines, i, note);
                 setTotalTypeMarket(documentLines, i, note);
-                setItems(documentLines, i, businessItems);
+                setItems(documentLines, i, items);
 
                 //FINISH SHEET NOTE
                 if (documentLines[i].contains(NoteConstant.FINISH_SHEET_NOTE)) {
-                    calculateFees(note, businessItems);
-                    note.setItems(businessItems);
+                    calculateFees(note, items);
+                    note.setItems(items);
+                    notes.add(note);
+                    note = new Note(); // restart object
+                    items = new ArrayList<>(); //restart object
                 }
             }
-            return note;
+            return notes;
         } catch (IOException e) {
-            throw new FileNoteException("fail to parse Excel file: " + e.getMessage());
+            throw new FileNoteException("fail to parse PDF file: " + e.getMessage());
         }
     }
 
@@ -226,7 +230,9 @@ class FileNoteServiceImpl implements FileNoteService {
         for (int i = 5; i < 9; i++) {
             if (result == null) {
                 final List<String> titles = titleService.getByCode(positionInitial);
-                result = titles.size() > 1 ? null : titles.get(0);
+                if (!titles.isEmpty()) {
+                    result = titles.size() > 1 ? null : titles.get(0);
+                }
                 positionInitial = positionInitial.concat(" ").concat(itemArray[i]);
             }
         }
