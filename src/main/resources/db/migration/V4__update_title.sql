@@ -1,0 +1,1 @@
+insert into title (name, code,type) values ('FII KINEA','KNRI11','FFI');

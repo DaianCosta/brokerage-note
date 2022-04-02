@@ -1,0 +1,1 @@
+insert into title (name, code,type) values ('TRIUNFO PART ON','TPIS3','ACTION');
