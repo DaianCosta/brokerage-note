@@ -3,8 +3,6 @@ package com.daiancosta.brokeragenote.domain.entities;
 import com.daiancosta.brokeragenote.domain.entities.enums.TypeFileEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.io.Serializable;
 
